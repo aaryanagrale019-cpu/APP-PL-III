@@ -1,0 +1,94 @@
+
+# Decorator for formatting report title
+def title_format(func):
+    def wrapper(self):
+        print("=" * 50)
+        print(func(self).upper())
+        print("=" * 50)
+    return wrapper
+
+
+class Report:
+    report_count = 0
+
+    def __init__(self, title, data):
+        self.title = title
+        self.data = data
+        Report.report_count += 1
+
+    
+  
+    def get_report_count(cls):
+        return cls.report_count
+
+    
+  
+    def display_title(self):
+        return self.title
+
+    
+    def generate_report(self):
+        self.display_title()
+
+        for key, value in self.data.items():
+            print(f"{key}: {value}")
+
+        print("=" * 50)
+
+    
+    def __str__(self):
+        return f"Report: {self.title}"
+
+    
+    def __len__(self):
+        return len(self.data)
+
+    
+    def __add__(self, other):
+        combined_data = self.data.copy()
+        combined_data.update(other.data)
+
+        return Report(
+            self.title + " + " + other.title,
+            combined_data
+        )
+
+
+report1 = Report(
+    "Student Report",
+    {
+        "Name": "Rahul",
+        "Roll Number": 101,
+        "Marks": 85,
+        "Grade": "A"
+    }
+)
+
+report2 = Report(
+    "College Report",
+    {
+        "College": "ABC College",
+        "Department": "Computer Science",
+        "Year": 2026
+    }
+)
+
+
+print("FIRST REPORT")
+report1.generate_report()
+
+print("\nSECOND REPORT")
+report2.generate_report()
+
+
+print("\nCOMBINED REPORT")
+report3 = report1 + report2
+report3.generate_report()
+
+
+print("\nReport Information:")
+print(report1)
+print("Number of fields:", len(report1))
+
+
+print("Total Reports Created:", Report.get_report_count())
